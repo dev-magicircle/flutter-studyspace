@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "567283850893",
+    "firebase_url": "https://studyspace-53c06.firebaseio.com",
+    "project_id": "studyspace-53c06",
+    "storage_bucket": "studyspace-53c06.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:567283850893:android:bf8dfed873f791cb8e0cc4",
+        "android_client_info": {
+          "package_name": "com.example.studyspace"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "567283850893-auhq2ck8ekm7gcfebpd7bjoi97cjnfp7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.studyspace",
+            "certificate_hash": "cc426c0023ce21328786469bb4ccffe62ff24fcb"
+          }
+        },
+        {
+          "client_id": "567283850893-7fu50vqo96ql8ghasu02n1j6oror2gss.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAD14BU8Rb_6fSd0TxK64GStBcpn8iw5M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "567283850893-7fu50vqo96ql8ghasu02n1j6oror2gss.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
