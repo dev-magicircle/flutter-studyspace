@@ -56,7 +56,7 @@ class Login extends StatelessWidget {
   Future<String> _signUpUser(LoginData loginData) {
     _handleSignUp(loginData.name.trim(), loginData.password).then((user) =>
         Fluttertoast.showToast(
-            msg: "Welcome ${user.email}",
+            msg: "환영합니다 ${user.email}님",
             toastLength: Toast.LENGTH_LONG,
             gravity: ToastGravity.CENTER,
             timeInSecForIosWeb: 1,

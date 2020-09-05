@@ -31,7 +31,7 @@ dependencies:
     firebase_auth: ^0.16.1
     #google_sign_in: ^4.5.1
     shimmer: ^1.1.1
-    provider: ^4.3.2
+    #provider: ^4.3.2
     flutter_login: ^1.0.14
     fluttertoast: ^7.0.2
     modal_bottom_sheet: ^0.2.0+1
@@ -41,6 +41,15 @@ dependencies:
     table_calendar: ^2.2.3
     firebase_storage: ^3.0.10
     firebase_image: ^0.1.5
+    file_picker: ^1.13.3
+    flutter_pdfview: ^1.0.0+10
+    flutter_filereader: ^2.2.0
+    advance_pdf_viewer: ^1.2.0
+
+#    pdftron_flutter:
+#      git:
+#        url: git://github.com/PDFTron/pdftron-flutter.git
+#    permission_handler: '3.0.1'
     #multi_image_picker: ^4.6.7
 
     #uuid: ^2.2.0

@@ -8,6 +8,7 @@ import 'package:studyspace/screens/file_list.dart';
 //화면
 import 'file:///C:/dev/studyspace/lib/screens/calendar.dart'; //복습일정화면
 import 'package:studyspace/screens/login.dart'; //로그인화면
+import 'package:studyspace/screens/myPage.dart';
 import 'package:studyspace/widget/widget.dart'; //스타일
 
 class Home extends StatefulWidget {
@@ -59,7 +60,12 @@ class _HomeState extends State<Home> {
                 IconButton(icon: Icon(Icons.alarm_on), onPressed: null),
                 IconButton(
                   icon: Icon(Icons.person),
-                  onPressed: null,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => (MyPage())),
+                    );
+                  },
                 )
               ],
             ),
@@ -67,8 +73,10 @@ class _HomeState extends State<Home> {
               child: StreamBuilder(
                   stream: getUsersPlanetsStreamSnapshots(context),
                   builder: (context, snapshot) {
-                    if (!snapshot.hasData) return const Text('Loading...');
+                    if (!snapshot.hasData)
+                      return Center(child: Text('행성이 비어있어요'));
                     return new ListView.builder(
+                        scrollDirection: Axis.horizontal,
                         itemCount: snapshot.data.documents.length,
                         itemBuilder: (BuildContext context, int index) =>
                             buildPlanetCard(
@@ -83,7 +91,7 @@ class _HomeState extends State<Home> {
               },
             ),
             floatingActionButtonLocation:
-            FloatingActionButtonLocation.centerFloat,
+                FloatingActionButtonLocation.centerFloat,
             drawer: Drawer(
               child: ListView(
                 children: <Widget>[
@@ -101,7 +109,12 @@ class _HomeState extends State<Home> {
                       ],
                     ),
                     onTap: () {
-                      },
+                      print('push');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => (MyPage())),
+                      );
+                    },
                   ),
                   ListTile(
                     title: Row(
@@ -109,7 +122,7 @@ class _HomeState extends State<Home> {
                         Icon(Icons.alarm),
                         Padding(
                           padding: const EdgeInsets.only(left: 16.0),
-                          child: Text('알림 설정'),
+                          child: Text('알림 설'),
                         ),
                       ],
                     ),
@@ -171,7 +184,7 @@ class _HomeState extends State<Home> {
                           Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(builder: (context) => Login()),
-                                  (route) => false));
+                              (route) => false));
                     },
                   ),
                 ],
@@ -181,48 +194,51 @@ class _HomeState extends State<Home> {
     );
   }
 
-
-
   //행성이름 팝업창
   _showDialog(context, _controller) {
     showDialog(
         context: context,
         builder: (_) => new AlertDialog(
               title: new Text("새로운 행성 이름"),
-              content: Column(
-                children: [
-                  new Material(
-                    elevation: 2.0,
-                    borderRadius: BorderRadius.circular(10.0),
-                    child: TextField(
-                        controller: _controller,
-                        decoration: textFieldInputDecoration("기억할 지식의 명칭 입력")),
-                  ),
-                  //확인버튼
-                  Row(
-                    children: [
-                      Expanded(
-                        child: FlatButton(
-                          child: Text('확인'),
-                          color: Colors.blueAccent,
-                          textColor: Colors.white,
-                          onPressed: () async {
-                            final FirebaseUser user = await _auth.currentUser();
-                            final uid = user.uid;
+              content: Container(
+                child: Column(
+                  children: [
+                    new Material(
+                      elevation: 2.0,
+                      borderRadius: BorderRadius.circular(10.0),
+                      child: TextField(
+                          controller: _controller,
+                          decoration:
+                              textFieldInputDecoration("기억할 지식의 명칭 입력")),
+                    ),
+                    //확인버튼
 
-                            await db
-                                .collection("userData")
-                                .document(uid)
-                                .collection("planets")
-                                .add({"name": _controller.text});
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                  ],
+                ),
               ),
+          actions: [Row(
+            children: [
+              Expanded(
+                child: FlatButton(
+                  child: Text('확인'),
+                  color: Colors.blueAccent,
+                  textColor: Colors.white,
+                  onPressed: () async {
+                    final FirebaseUser user =
+                    await _auth.currentUser();
+                    final uid = user.uid;
+
+                    await db
+                        .collection("userData")
+                        .document(uid)
+                        .collection("planets")
+                        .add({"name": _controller.text});
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+            ],
+          ),],
             ));
   }
 
@@ -243,18 +259,15 @@ class _HomeState extends State<Home> {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => FileList(title:planet['name'])),
-          );},
-        child: ClipOval(
-            child: Container(
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage("assets/img/planet_purple.png"),
-                        fit: BoxFit.cover)),
-                height: 50.0,
-                width: 50.0,
-                child: Column(
-                  children: [Text(planet['name'])],
-                ))));
+            MaterialPageRoute(
+                builder: (context) => FileList(title: planet['name'])),
+          );
+        },
+        child: CircleAvatar(
+            // backgroundImage: AssetImage("assets/img/planet_purple.png"),
+            radius: 50.0,
+            child: Column(
+              children: [Text(planet['name'])],
+            )));
   }
 }

@@ -2,17 +2,20 @@
 //등록한 파일들을 리스트 형태로 보여줌
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:studyspace/screens/myPage.dart';
 import 'dart:io';
 
 //화면
 import 'package:studyspace/screens/view_file.dart'; //파일 보는 화면
 import 'package:studyspace/widget/widget.dart'; //스타일
+import 'package:studyspace/screens/test.dart';
 
 class FileList extends StatefulWidget {
   FileList({Key key, this.title}) : super(key: key);
@@ -48,6 +51,8 @@ class _FileListState extends State<FileList> {
 
   initUser() async {
     user = await _auth.currentUser();
+    final uid = user.uid;
+
     setState(() {});
   }
 
@@ -76,30 +81,42 @@ class _FileListState extends State<FileList> {
                   Navigator.pop(context);
                 },
               ),
+              actions: [
+                IconButton(
+                  icon: Icon(Icons.person),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => (Test())),
+                    );
+                  },
+                ),
+                IconButton(
+                  icon: Icon(Icons.person),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => (MyPage())),
+                    );
+                  },
+                )
+              ],
             ),
-
-            body: Container(
-//              child: StreamBuilder<QuerySnapshot>(
-//                  stream: Firestore.instance.collection('files').document(user.uid).collection(title).document(_fileNamecontroller.text).collection('file').snapshots(),
-//                  builder: (context, snapshot) {
-//                    if (!snapshot.hasData)
-//                      return Center(child: CircularProgressIndicator());
-//                    return new ListView.builder(
-//                      itemCount: snapshot.data.documents.length,
-//                      itemBuilder: (BuildContext context, int index) =>
-//                          buildFile(context, snapshot.data.documents[index]),
-//                    );
-//                  }),
-
-              child: StreamBuilder(
-                  stream: getUsersFileListStreamSnapshots(context),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) return Center(child: CircularProgressIndicator());
-                    return new ListView.builder(
-                        itemCount: snapshot.data.documents.length,
-                        itemBuilder: (BuildContext context, int index) =>
-                            buildFile(context, snapshot.data.documents[index]));
-                  }),
+            body: Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Container(
+                child: StreamBuilder(
+                    stream: getUsersFileListStreamSnapshots(context),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData)
+                        return Center(child: CircularProgressIndicator());
+                      return new ListView.builder(
+                          itemCount: snapshot.data.documents.length,
+                          itemBuilder: (BuildContext context, int index) =>
+                              buildFile(
+                                  context, snapshot.data.documents[index]));
+                    }),
+              ),
             ),
             floatingActionButton: FloatingActionButton(
               child: Icon(Icons.add),
@@ -109,7 +126,7 @@ class _FileListState extends State<FileList> {
               },
             ),
             floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerFloat,
+            FloatingActionButtonLocation.centerFloat,
           )),
     );
   }
@@ -124,7 +141,10 @@ class _FileListState extends State<FileList> {
             borderRadius: BorderRadius.vertical(top: Radius.circular(16.0))),
         builder: (BuildContext bc) {
           return Container(
-            height: MediaQuery.of(bc).size.height * .50,
+            height: MediaQuery
+                .of(bc)
+                .size
+                .height * .50,
             child: Padding(
                 padding: const EdgeInsets.all(24.0),
                 child: Column(
@@ -143,16 +163,20 @@ class _FileListState extends State<FileList> {
                               hintText: '기억할 지식의 명칭 입력',
                               //hintStyle: f,
                               errorText:
-                                  _validate ? '지식 이름을 꼭 채워주셔야 해욧!' : null,
+                              _validate ? '지식 이름을 꼭 채워주셔야 해욧!' : null,
                             ),
                           ),
                         ),
                         Text('파일 가져오기', style: simpleTextStyle()),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             //카메라
                             SizedBox(
-                              height: MediaQuery.of(context).size.width * 0.2,
+                              height: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width * 0.2,
                               child: RaisedButton(
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(18.0),
@@ -173,7 +197,10 @@ class _FileListState extends State<FileList> {
                             ),
                             //갤러리
                             SizedBox(
-                              height: MediaQuery.of(context).size.width * 0.2,
+                              height: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width * 0.2,
                               child: RaisedButton(
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(18.0),
@@ -193,6 +220,29 @@ class _FileListState extends State<FileList> {
                               ),
                             ),
                             //파일
+                            SizedBox(
+                              height: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width * 0.2,
+                              child: RaisedButton(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                    side: BorderSide(color: Colors.white)),
+                                onPressed: () async {
+                                  File file = await FilePicker.getFile();
+                                },
+                                color: Colors.white,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset('assets/icon/document.png'),
+                                    Text('파일'.toUpperCase(),
+                                        style: TextStyle(fontSize: 14)),
+                                  ],
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ],
@@ -257,7 +307,9 @@ class _FileListState extends State<FileList> {
     final firebaseStorageRef = FirebaseStorage.instance
         .ref()
         .child('files')
-        .child('${DateTime.now().millisecondsSinceEpoch}.png');
+        .child('${DateTime
+        .now()
+        .millisecondsSinceEpoch}.png');
 
     //파일 업로드
     final task = firebaseStorageRef.putFile(
@@ -276,22 +328,22 @@ class _FileListState extends State<FileList> {
     await Firestore.instance
         .collection("files")
         .document(uid)
-        .collection(title) //
-        .document(_fileNamecontroller.text)
-        .collection('file')
+        .collection(title)
         .add({
       'filename': _fileNamecontroller.text,
       'photoUrl': downloadURL,
-      'uploadTime': DateTime.now()
+      'uploadTime': DateTime.now(),
     });
-    Navigator.pop(context);
 
-//    //업로드된 사진의 URL을 페이지에 반영
-//    setState(() {
-//      _imageURL = downloadURL;
-//      print('url' + downloadURL);
-//      urls.add(_imageURL);
-//    });
+    //review에 복습 횟수 0으로 설정
+    await Firestore.instance
+        .collection("review")
+        .document(uid)
+        .collection(title) //행성이름
+        .document(_fileNamecontroller.text) //파일
+        .collection("review")
+        .document("1")
+        .setData({"reviewCount": int.parse('0')});
   }
 
   Stream<QuerySnapshot> getUsersFileListStreamSnapshots(
@@ -303,32 +355,18 @@ class _FileListState extends State<FileList> {
         .collection("files")
         .document(uid)
         .collection(title)
-        .document(_fileNamecontroller.text)
-        .collection('file')
         .snapshots();
-
-    print('snapshot');
-//        .collection('userData')
-//        .document(uid)
-//        .collection('planets')
-//        .snapshots();
-
-//    .collection("files")
-//        .document(uid)
-//        .collection(title) //
-//        .document(_fileNamecontroller.text)
-//        .collection('file')
   }
 
   Widget _buildImage() {
     return _image == null
         ? Text('이미지가 없음')
         : Image.file(
-            _image,
-            width: 50,
-            height: 50,
-            fit: BoxFit.cover,
-          );
+      _image,
+      width: 50,
+      height: 50,
+      fit: BoxFit.cover,
+    );
   }
 
   Widget buildFile(BuildContext context, DocumentSnapshot file) {
@@ -338,25 +376,65 @@ class _FileListState extends State<FileList> {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    ViewFile(title: file['filename'], urls: file['photoUrl'])),
+                    ViewFile(
+                        title: title,
+                        file: file['filename'],
+                        urls: file['photoUrl'])),
           );
         },
         child: Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(
-              color: Colors.white,
-            ),
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          height: 50.0,
-          width: 50.0,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [Text(file['filename'])],
-          )),
-    ));
+          padding: const EdgeInsets.only(bottom: 8.0),
+          child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(
+                  color: Colors.white,
+                ),
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              height: 50.0,
+              width: 50.0,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(15.0,0,15.0,0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      file['filename'],
+                    ),
+                    StreamBuilder(
+                        stream: getReviewCountStreamSnapshots(context,file['filename']),
+                        builder: (context, snapshot) {
+                          var data = snapshot.data.documents[0];
+                          var reviewCount = data['reviewCount'];
+                          if (!snapshot.hasData)
+                            return Center(child: CircularProgressIndicator());
+                          if('$reviewCount'=='0') return Container(child: Text('0%'));
+                          else if('$reviewCount'=='3')return Row(children: [
+                            Container(height: 10, decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color:Hexcolor('#F77581'),)),
+                            Text('20%')
+                          ]);
+                        }),
+                  ],
+                ),
+              )),
+        ));
+  }
+
+
+  Stream<QuerySnapshot> getReviewCountStreamSnapshots(
+      BuildContext context,String filename) async* {
+    final FirebaseUser user = await _auth.currentUser();
+    final uid = user.uid;
+
+    yield* Firestore.instance
+        .collection("review")
+        .document(uid)
+        .collection(title) //행성이름
+        .document(filename) //파일
+        .collection("review")
+        .snapshots();
   }
 }
