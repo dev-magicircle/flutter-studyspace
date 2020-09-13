@@ -37,14 +37,27 @@ dependencies:
     modal_bottom_sheet: ^0.2.0+1
     image_picker: ^0.6.7+4
     cloud_firestore: ^0.13.5
+    firebase_helpers: ^0.1.0
     firebase_core: ^0.4.5
     table_calendar: ^2.2.3
     firebase_storage: ^3.0.10
     firebase_image: ^0.1.5
     file_picker: ^1.13.3
-    flutter_pdfview: ^1.0.0+10
+    syncfusion_flutter_calendar: ^18.2.57
+
+    #flutter_pdfview: ^1.0.0+10
     flutter_filereader: ^2.2.0
-    advance_pdf_viewer: ^1.2.0
+    #advance_pdf_viewer: ^1.2.0
+#    multi_image_picker: ^4.7.12
+    flutter_plugin_pdf_viewer: ^1.0.7
+    #http to download PDF
+    http: ^0.12.0+4
+    flutter_local_notifications: ^1.4.4+4
+    android_alarm_manager: ^0.4.5+11
+    #Open PDF in a viewer
+    flutter_full_pdf_viewer: ^1.0.6
+    firebase_ml_vision:
+    lottie: ^0.6.0
 
 #    pdftron_flutter:
 #      git:

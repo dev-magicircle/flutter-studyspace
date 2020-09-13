@@ -3,23 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'file:///C:/dev/studyspace/lib/screens/home.dart';
+import 'package:studyspace/screens/home1.dart';
 
 class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FlutterLogin(
       title: 'Study Space',
-     // logo:'assets/img/logo.png',
+      // logo:'assets/img/logo.png',
       //로그인
       onLogin: _loginUser,
       //회원가입
       onSignup: _signUpUser,
-      onSubmitAnimationCompleted: () async{
+      onSubmitAnimationCompleted: () async {
         FirebaseAuth _auth = FirebaseAuth.instance;
         //로그인이 돼있으면 Home화면으로 가고 안돼있으면 toast메세지가 나온다.
-        await _auth.currentUser().then((user)=>user!=null?Navigator.of(context).pushReplacement(MaterialPageRoute(builder:(context)=>Home()))
-        :Fluttertoast.showToast(msg:"전에 가입을 안했습니다."));
-        },
+        await _auth.currentUser().then((user) => user != null
+            ? Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => Home1()))
+            : Fluttertoast.showToast(msg: "로그인 정보가 없습니다."));
+      },
       onRecoverPassword: _recoveryPassword,
     );
   }

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:studyspace/screens/home1.dart';
 import 'file:///C:/dev/studyspace/lib/screens/home.dart'; //홈화면
 import 'package:studyspace/screens/login.dart'; //로그인화면
 
@@ -23,9 +24,7 @@ class MyApp extends StatelessWidget {
             color: Colors.white,
           ),
           button: TextStyle(
-
           ),
-
         ),
       ),
       home: MyAppPage(title: 'Study Space'),
@@ -48,7 +47,7 @@ class _MyAppPageState extends State<MyAppPage> {
       if (isLogin == true) {
         print('이미 로그인');
         Navigator.pushAndRemoveUntil(context,
-            MaterialPageRoute(builder: (context) => Home()), (route) => false);
+            MaterialPageRoute(builder: (context) => Home1()), (route) => false);
       } else {
         print('로그인X');
         Navigator.pushAndRemoveUntil(context,
@@ -58,7 +57,7 @@ class _MyAppPageState extends State<MyAppPage> {
     return new Scaffold(
         body: Card(
             child: Center(
-                child: Text('Loading...',
+                child: Text('로딩...',
                     style: TextStyle(
                         fontSize: 24.0,
                         fontWeight: FontWeight.bold,
